@@ -6,13 +6,16 @@ from PyQt5.QtWidgets import QApplication, QTextEdit
 from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QPushButton, \
     QTableWidget, QDialog, QComboBox
 
-BASE = 'coffee.sqlite'
+from UI.addEditCoffeeForm import Ui_Form
+from UI.mainui import myMain
+
+BASE = 'data/coffee.sqlite'
 
 
-class MyWidget(QMainWindow):
+class MyWidget(QMainWindow, myMain):
     def __init__(self):
         super().__init__()
-        uic.loadUi('main.ui', self)
+        self.setupUi(self)
         self.initUI()
 
     def initUI(self):
@@ -20,6 +23,7 @@ class MyWidget(QMainWindow):
         self.uodate_table()
         self.btn.clicked.connect(self.add1)
         self.btn_2.clicked.connect(self.add2)
+
     def uodate_table(self):
         con = sqlite3.connect(BASE)
         res = con.cursor().execute(F"""SELECT *  FROM coffee""").fetchall()
@@ -58,13 +62,13 @@ class MyWidget(QMainWindow):
         self.show()
 
 
-
-class Dialog1(QDialog):
+class Dialog1(QDialog, Ui_Form):
     def __init__(self, change=None):
         super().__init__()
-        uic.loadUi("addEditCoffeeForm.ui", self)
+        self.setupUi(self)
         self.lab_8.setText('добавить')
         self.changes = change
+
         self.initUI()
 
     def initUI(self):
